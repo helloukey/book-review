@@ -16,6 +16,7 @@ const userSchema = new Schema({
   work: { type: String, required: false },
   dob: { type: Date, required: false },
   description: { type: String, required: false },
+  verified: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("User", userSchema);
