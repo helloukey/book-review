@@ -1,22 +1,26 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
-const requireAuth = (req, res, next) => {
-  const token = req.cookies.book - review - auth;
+const requireAuth = async (req, res, next) => {
+  const token = req.cookies.jwt;
   // check if the token exists
   if (!token) {
     res.redirect("/login");
   }
 
-  // validate the token
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-      if (err) {
-        console.log(err);
-        res.redirect("/login");
-      } else {
-        next();
-      }
-    });
+  try {
+    // verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // check if the user exists
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      res.redirect("/login");
+    }
+    req.user = user;
+    next();
+  } catch (error) {
+    console.log(error);
+    res.redirect("/login");
   }
 };
 

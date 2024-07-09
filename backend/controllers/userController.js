@@ -4,6 +4,7 @@ const generateOtp = require("../utils/otp");
 const sendMail = require("../utils/mail");
 const { compareValues } = require("../utils/bcrypt");
 const generateToken = require("../utils/token");
+const { detailsOptions } = require("../utils/details");
 
 // Register a new user
 const registerUser = async (req, res) => {
@@ -148,7 +149,7 @@ const loginUser = async (req, res) => {
 
     // generate a token and send it to the user
     const token = generateToken(user._id);
-    res.cookie("book-review-auth", token, {
+    res.cookie("jwt", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24 * 30,
@@ -161,4 +162,53 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, verifyOTP, loginUser };
+// Logout a user
+const logoutUser = (req, res) => {
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.status(200).json({ success: true, message: "Logout successful" });
+};
+
+// update user details
+const updateUser = async (req, res) => {
+  const { location, age, work, dob, description } = req.body;
+  const details = detailsOptions(location, age, work, dob, description);
+
+  try {
+    const user = await User.findByIdAndUpdate(req.user.id, details, {
+      new: true,
+    });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    return res
+      .status(200)
+      .json({
+        success: true,
+        user: user.id,
+        message: "User updated successfully",
+      });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get user details
+const getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id, { password: 0 });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    return res.status(200).json({ success: true, user, message: "User found 😀"});
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { registerUser, verifyOTP, loginUser, logoutUser, updateUser, getUser };
