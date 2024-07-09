@@ -2,6 +2,7 @@ const User = require("../models/user");
 const Otp = require("../models/otp");
 const generateOtp = require("../utils/otp");
 const sendMail = require("../utils/mail");
+const { compareValues } = require("../utils/bcrypt");
 
 // Register a new user
 const registerUser = async (req, res) => {
@@ -44,8 +45,54 @@ const registerUser = async (req, res) => {
       message: "User created successfully! Check your email for the OTP",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-module.exports = { registerUser };
+const verifyOTP = async (req, res) => {
+  const { otp, otpId } = req.body;
+  if (!otp || !otpId) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Please provide the OTP details" });
+  }
+
+  try {
+    // find the OTP document
+    const otpDoc = await Otp.findById(otpId);
+    // check if the OTP is valid
+    if (!otpDoc) {
+      return res.status(404).json({ success: false, message: "Invalid OTP" });
+    }
+    const value = compareValues(otp, otpDoc.otp);
+    if (!value) {
+      return res.status(400).json({ success: false, message: "Invalid OTP" });
+    }
+
+    // check if the OTP has expired
+    if (otpDoc.expiresAt < Date.now()) {
+      await Otp.deleteMany({ user: otpDoc.user });
+      return res.status(400).json({
+        success: false,
+        message: "OTP has expired, Login again to get new OTP",
+      });
+    }
+
+    // update the user's account status
+    if (value) {
+      await User.findByIdAndUpdate(otpDoc.user, { verified: true });
+      await Otp.deleteMany({ user: otpDoc.user });
+      return res
+        .status(200)
+        .json({ success: true, message: "OTP verified successfully" });
+    }
+
+    return res
+      .status(400)
+      .json({ success: false, message: "OTP verification failed!" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { registerUser, verifyOTP };
