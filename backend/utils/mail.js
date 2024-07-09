@@ -14,7 +14,7 @@ const mailDetails = (email, otp, url) => {
     from: process.env.GMAIL_ADDRESS,
     to: email,
     subject: "OTP Verification",
-    html: `<p>Hi! Your OTP is <b>${otp}</b></p><br/><a href="${url}">Click here to Verify</a>`,
+    html: `<p>Hi! Your OTP is <b>${otp}</b></p><br/><a href="${url}" target="_blank">Click here to Verify</a>`,
   };
 };
 

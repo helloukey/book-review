@@ -10,12 +10,16 @@ const otpSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
-  expireAt: {
+  createdAt: {
     type: Date,
-    default: Date.now,
-    index: { expires: 3600 } // this document will be deleted after 1 hour
+    required: true,
   },
+  expiresAt: {
+    type: Date,
+    required: true,
+  }
 });
 
 // Hash password before saving it to the database
