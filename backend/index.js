@@ -6,6 +6,7 @@ const app = express();
 
 // route imports
 const userRoute = require("./routes/user");
+const bookRoute = require("./routes/book");
 
 // middlewares
 app.use(express.json());
@@ -35,3 +36,4 @@ app.get("/", (req, res) => {
   res.send("Hello from the Backend! 🤩");
 });
 app.use("/user", userRoute);
+app.use("/book", bookRoute);
