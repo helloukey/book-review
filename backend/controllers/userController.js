@@ -22,7 +22,12 @@ const registerUser = async (req, res) => {
     // create a new user and an OTP document
     const user = await User.create({ email, password, username });
     const otp = generateOtp();
-    const otpDoc = await Otp.create({ otp, user: user._id, createdAt: Date.now(), expiresAt: Date.now() + 3600000});
+    const otpDoc = await Otp.create({
+      otp,
+      user: user._id,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 3600000,
+    });
 
     // send the OTP to the user's email
     const url = `${process.env.FRONTEND_BASE_URL}/verify/${otpDoc._id}`;
