@@ -7,6 +7,7 @@ const app = express();
 // route imports
 const userRoute = require("./routes/user");
 const bookRoute = require("./routes/book");
+const reviewRoute = require("./routes/review");
 
 // middlewares
 app.use(express.json());
@@ -37,3 +38,4 @@ app.get("/", (req, res) => {
 });
 app.use("/user", userRoute);
 app.use("/book", bookRoute);
+app.use("/review", reviewRoute);
