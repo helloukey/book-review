@@ -1,11 +1,16 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 const app = express();
+
+// route imports
+const userRoute = require("./routes/user");
 
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // connect to MongoDB and start the server
 const startServer = async () => {
@@ -29,3 +34,4 @@ startServer();
 app.get("/", (req, res) => {
   res.send("Hello from the Backend! 🤩");
 });
+app.use("/user", userRoute);
