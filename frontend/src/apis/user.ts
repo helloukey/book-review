@@ -72,7 +72,7 @@ const logoutUser = async () => {
     const response = await fetch(
       process.env.REACT_APP_BACKEND_URL + "/user/logout",
       {
-        method: "GET",
+        method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",

@@ -14,10 +14,11 @@ function App() {
   useEffect(() => {
     getUser().then((data) => setUser(data?.user));
   }, []);
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Layout>
+        <Layout user={user} >
           <Routes>
             <Route path="/" element={<Hero user={user} />} />
             <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />

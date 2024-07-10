@@ -1,17 +1,8 @@
 import { Link } from "react-router-dom";
+import type { user } from "../types/data";
 
 type Props = {
-  user: {
-    _id: string;
-    email: string;
-    username: string;
-    location: string;
-    age: number;
-    work: string;
-    dob: string;
-    description: string;
-    verified: boolean;
-  } | null;
+  user: user | null;
 };
 
 const Hero = ({ user }: Props) => {

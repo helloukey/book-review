@@ -1,13 +1,35 @@
 import { Link } from "react-router-dom";
+import type { user } from "../types/data";
+import { logoutUser } from "../apis/user";
+import { useState } from "react";
 
 type Props = {
   children: React.ReactNode;
+  user: user | null;
 };
 
-const Layout = (props: Props) => {
+const Layout = ({ children, user }: Props) => {
+  const [loading, setLoading] = useState(false);
+
+  // Handle Logout
+  const handleLogout = async () => {
+    try {
+      setLoading(true);
+      const data = await logoutUser();
+      setLoading(false);
+      if (data?.success) {
+        window.location.href = "/";
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Error logging out", error);
+    }
+  };
+
   return (
     <>
-      <header className="mb-8 flex items-center justify-between border-b py-4 md:mb-12 md:py-8 xl:mb-16 px-4 md:px-8">
+      {/* Navbar */}
+      <header className="mb-8 flex items-center justify-between border-b py-4 md:mb-12 xl:mb-16 px-4 md:px-8">
         <Link
           to="/"
           className="inline-flex items-center gap-2.5 text-2xl font-bold text-black md:text-3xl"
@@ -25,16 +47,30 @@ const Layout = (props: Props) => {
           </svg>
           Book-Review
         </Link>
-        <nav className="hidden gap-12 lg:flex">
-          <Link to="/profile" className="text-lg font-semibold text-indigo-500">
-            Profile
-          </Link>
-          <Link
-            to="/books"
-            className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
-          >
-            Books
-          </Link>
+        <nav className="hidden gap-12 lg:flex items-center">
+          {user ? (
+            <>
+              <Link
+                to="/profile"
+                className="text-lg font-semibold text-indigo-500 p-4"
+              >
+                Profile
+              </Link>
+              <Link
+                to="/books"
+                className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700 p-4"
+              >
+                Books
+              </Link>
+              <button
+                className="inline-block rounded-lg bg-gray-700 p-4 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-gray-800 focus-visible:ring active:text-gray-700 md:text-base"
+                onClick={handleLogout}
+                disabled={loading}
+              >
+                {loading ? "Logging out..." : "Logout"}
+              </button>
+            </>
+          ) : null}
         </nav>
 
         <button
@@ -55,7 +91,9 @@ const Layout = (props: Props) => {
           </svg>
         </button>
       </header>
-      {props.children}
+      {/* Children */}
+      {children}
+      {/* Footer */}
       <div className="bg-white pt-4 sm:pt-10 lg:pt-12 mt-40">
         <footer className="mx-auto max-w-screen-2xl px-4 md:px-8">
           <div className="py-8 text-center text-sm text-gray-400">
