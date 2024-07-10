@@ -14,10 +14,10 @@ const requireAuth = async (req, res, next) => {
     // check if the user exists
     const user = await User.findById(decoded?.id);
     if (!user) {
-      res.redirect("/login");
+      return res.status(400).json({ success: false, message: "Unauthorized" });
     }
     // check if the user has verified their account
-    if (!user.verified) {
+    if (user?.verified === false) {
       return res
         .status(400)
         .json({ success: false, message: "Please verify your account" });
