@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const requireAuth = async (req, res, next) => {
-  const token = req.cookies.jwt;
+  const token = req?.cookies?.jwt;
   // check if the token exists
   if (!token) {
     res.redirect("/login");
@@ -12,7 +12,7 @@ const requireAuth = async (req, res, next) => {
     // verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     // check if the user exists
-    const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded?.id);
     if (!user) {
       res.redirect("/login");
     }
