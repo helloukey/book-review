@@ -198,7 +198,7 @@ const updateUser = async (req, res) => {
 // Get user details
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id, { password: 0 });
+    const user = await User.findById(req?.user?.id, { password: 0 });
     if (!user) {
       return res
         .status(404)
