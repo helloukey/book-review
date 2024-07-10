@@ -27,7 +27,7 @@ const Register = (props: Props) => {
       const data = await registerUser({ username, email, password });
       setLoading(false);
       if (!data?.success) {
-        setError(data.message);
+        setError(data?.message);
         return;
       };
       if (data?.success) {

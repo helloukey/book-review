@@ -67,7 +67,7 @@ const verifyOTP = async (req, res) => {
     if (!otpDoc) {
       return res.status(404).json({ success: false, message: "Invalid OTP" });
     }
-    const value = compareValues(otp, otpDoc.otp);
+    const value = await compareValues(otp, otpDoc.otp);
     if (!value) {
       return res.status(400).json({ success: false, message: "Invalid OTP" });
     }

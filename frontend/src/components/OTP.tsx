@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { verifyUser } from "../apis/user";
 
 type Props = {};
 
 const OTP = (props: Props) => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const location = useParams();
-  console.log(location);
+  const { otpId } = useParams();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleOtpChange = (index: number, value: string) => {
     const updatedOtp = [...otp];
@@ -38,16 +40,44 @@ const OTP = (props: Props) => {
   }, [activeIndex]);
 
   // Handle submit
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setError("");
     const otpValue = otp.join("");
-    console.log(otpValue);
-  }
+
+    // Check OTP
+    if (otpValue.length < 6) {
+      setError("Invalid OTP");
+      return;
+    }
+
+    // Check OTP ID
+    if (!otpId) {
+      setError("Invalid OTP ID");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const data = await verifyUser(otpId, otpValue);
+      setLoading(false);
+      if (!data?.success) {
+        setError(data.message);
+        return;
+      }
+      if (data?.success) {
+        window.location.href = "/profile";
+      }
+    } catch (error: any) {
+      setLoading(false);
+      setError(error.message);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center bg-white px-4 sm:px-0">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">
-          Enter Your OTP
+        <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+          Check your email for OTP
         </h2>
         <div className="flex items-center justify-center space-x-3">
           {[...Array(6)].map((_, index) => (
@@ -64,8 +94,15 @@ const OTP = (props: Props) => {
             </div>
           ))}
         </div>
+
+        {/* Error */}
+        {error && <p className="text-md text-red-500 text-center">{error}</p>}
+
         <div className="mt-6 flex justify-end">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" onClick={handleSubmit}>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </div>
