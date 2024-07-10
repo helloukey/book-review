@@ -14,6 +14,6 @@ userRoute.post("/verify", verifyOTP);
 userRoute.post("/login", loginUser);
 userRoute.post("/logout", requireAuth, logoutUser);
 userRoute.post("/update-user", requireAuth, updateUser);
-userRoute.get("/get-user", getUser);
+userRoute.get("/get-user", requireAuth, getUser);
 
 module.exports = userRoute;

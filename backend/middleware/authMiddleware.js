@@ -5,7 +5,7 @@ const requireAuth = async (req, res, next) => {
   const token = req?.cookies?.jwt;
   // check if the token exists
   if (!token) {
-    res.redirect("/login");
+    return res.status(401).json({ success: false, message: "Unauthorized" });
   }
 
   try {
