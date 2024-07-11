@@ -7,6 +7,7 @@ import { OTP } from "./components/OTP";
 import { NotFound } from "./components/404";
 import { useEffect, useState } from "react";
 import { getUser } from "./apis/user";
+import { Profile } from "./components/Profile";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -18,12 +19,25 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Layout user={user} >
+        <Layout user={user}>
           <Routes>
             <Route path="/" element={<Hero user={user} />} />
-            <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-            <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
-            <Route path="/verify/:otpId" element={user ? <Navigate to="/" /> : <OTP />} />t
+            <Route
+              path="/login"
+              element={user ? <Navigate to="/" /> : <Login />}
+            />
+            <Route
+              path="/register"
+              element={user ? <Navigate to="/" /> : <Register />}
+            />
+            <Route
+              path="/verify/:otpId"
+              element={user ? <Navigate to="/" /> : <OTP />}
+            />
+            <Route
+              path="/profile"
+              element={<Profile user={user} />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>

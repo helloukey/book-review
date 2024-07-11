@@ -15,7 +15,7 @@ const userSchema = new Schema({
   location: { type: String, required: false },
   age: { type: Number, required: false },
   work: { type: String, required: false },
-  dob: { type: Date, required: false },
+  dob: { type: String, required: false },
   description: { type: String, required: false },
   verified: { type: Boolean, default: false },
 });

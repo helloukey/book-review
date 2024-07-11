@@ -1,4 +1,4 @@
-type user = {
+type User = {
   _id: string;
   email: string;
   username: string;
@@ -10,4 +10,13 @@ type user = {
   verified: boolean;
 };
 
-export type { user };
+type Book = {
+  _id: string;
+  title: string;
+  author: string;
+  genre: string;
+  description: string;
+  submittedBy: string;
+};
+
+export type { User, Book };

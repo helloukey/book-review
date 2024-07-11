@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import type { user } from "../types/data";
+import type { User } from "../types/data";
 
 type Props = {
-  user: user | null;
+  user: User | null;
 };
 
 const Hero = ({ user }: Props) => {

@@ -94,7 +94,7 @@ const updateUser = async (user: object) => {
     const response = await fetch(
       process.env.REACT_APP_BACKEND_URL + "/user/update-user",
       {
-        method: "PUT",
+        method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",

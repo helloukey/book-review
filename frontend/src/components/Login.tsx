@@ -86,9 +86,9 @@ const Login = (props: Props) => {
             </div>
 
             {/* Error */}
-            {error && (
+            {error ? (
               <p className="text-md text-red-500 text-center">{error}</p>
-            )}
+            ): null}
 
             <button
               type="submit"

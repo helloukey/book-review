@@ -29,7 +29,7 @@ const Register = (props: Props) => {
       if (!data?.success) {
         setError(data?.message);
         return;
-      };
+      }
       if (data?.success) {
         const url = `/verify/${data.otpId}`;
         window.location.href = url;
@@ -106,9 +106,9 @@ const Register = (props: Props) => {
             </div>
 
             {/* Error */}
-            {error && (
+            {error ? (
               <p className="text-md text-red-500 text-center">{error}</p>
-            )}
+            ) : null}
 
             <button
               className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base"
