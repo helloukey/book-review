@@ -105,7 +105,7 @@ const SubmittedBooks = (props: Props) => {
                 {/* Delete button */}
                 <button
                   className="btn p-2"
-                  onClick={() => handleDelete(book._id)}
+                  onClick={() => handleDelete(book?._id || "")}
                   disabled={loading}
                 >
                   <svg

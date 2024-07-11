@@ -8,6 +8,7 @@ import { NotFound } from "./components/404";
 import { useEffect, useState } from "react";
 import { getUser } from "./apis/user";
 import { Profile } from "./components/Profile";
+import { AllBooks } from "./components/AllBooks";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,10 +35,8 @@ function App() {
               path="/verify/:otpId"
               element={user ? <Navigate to="/" /> : <OTP />}
             />
-            <Route
-              path="/profile"
-              element={<Profile user={user} />}
-            />
+            <Route path="/profile" element={<Profile user={user} />} />
+            <Route path="/books" element={<AllBooks user={user} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
