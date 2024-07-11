@@ -23,9 +23,9 @@ const addReview = async (req, res) => {
 
 // Get all reviews
 const getReviews = async (req, res) => {
-  const { book } = req.query;
+  const { bookId } = req.params;
   try {
-    const reviews = await Review.find({ book }).populate("user");
+    const reviews = await Review.find({ book: bookId }).populate("user");
     res
       .status(200)
       .json({ success: true, data: reviews, message: "All reviews" });

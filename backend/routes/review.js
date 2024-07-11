@@ -3,6 +3,6 @@ const { requireAuth } = require("../middleware/authMiddleware");
 const { addReview, getReviews } = require("../controllers/reviewController");
 
 reviewRoute.post("/add-review", requireAuth, addReview);
-reviewRoute.get("/get-reviews", requireAuth, getReviews);
+reviewRoute.get("/:bookId", requireAuth, getReviews);
 
 module.exports = reviewRoute;

@@ -5,11 +5,13 @@ const {
   getBooks,
   getUserBooks,
   deleteBook,
+  getBook,
 } = require("../controllers/bookController");
 
 bookRoute.post("/add", requireAuth, addBook);
 bookRoute.get("/all", requireAuth, getBooks);
 bookRoute.get("/user", requireAuth, getUserBooks);
 bookRoute.delete("/delete/:id", requireAuth, deleteBook);
+bookRoute.get("/:id", requireAuth, getBook);
 
 module.exports = bookRoute;

@@ -62,4 +62,19 @@ const deleteBook = async (req, res) => {
   }
 };
 
-module.exports = { addBook, getBooks, getUserBooks, deleteBook };
+// Get single book
+const getBook = async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Book not found" });
+    }
+    res.status(200).json({ success: true, data: book, message: "Book found" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { addBook, getBooks, getUserBooks, deleteBook, getBook };
