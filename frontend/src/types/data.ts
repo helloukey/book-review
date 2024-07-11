@@ -19,4 +19,14 @@ type Book = {
   submittedBy: string;
 };
 
-export type { User, Book };
+type Review = {
+  _id?: string;
+  book: string;
+  user?: User;
+  review: string;
+  rating: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type { User, Book, Review };

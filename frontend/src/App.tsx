@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { getUser } from "./apis/user";
 import { Profile } from "./components/Profile";
 import { AllBooks } from "./components/AllBooks";
+import { BookDetails } from "./components/BookDetails";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -37,6 +38,10 @@ function App() {
             />
             <Route path="/profile" element={<Profile user={user} />} />
             <Route path="/books" element={<AllBooks user={user} />} />
+            <Route
+              path="/books/:bookId"
+              element={<BookDetails user={user} />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>

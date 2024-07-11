@@ -89,4 +89,26 @@ const deleteBook = async (id: string) => {
   }
 };
 
-export { addBook, getUserBooks, getAllBooks, deleteBook };
+// Get single book
+const getBook = async (id: string) => {
+  try {
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL + "/book/" + id,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error getting book: ", error);
+  }
+};
+
+export { addBook, getUserBooks, getAllBooks, deleteBook, getBook };
