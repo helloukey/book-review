@@ -85,9 +85,20 @@ const verifyOTP = async (req, res) => {
     if (value) {
       await User.findByIdAndUpdate(otpDoc.user, { verified: true });
       await Otp.deleteMany({ user: otpDoc.user });
+      // generate a token and send it to the user
+      const token = generateToken(otpDoc.user);
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24 * 30,
+      });
       return res
         .status(200)
-        .json({ success: true, message: "OTP verified successfully" });
+        .json({
+          success: true,
+          user: otpDoc.user,
+          message: "OTP verified successfully",
+        });
     }
 
     return res
@@ -125,7 +136,7 @@ const loginUser = async (req, res) => {
     }
 
     // check if the user has verified their account
-    if (!user.verified) {
+    if (!user?.verified) {
       await Otp.deleteMany({ user: user._id });
       const otp = generateOtp();
       const otpDoc = await Otp.create({
@@ -183,13 +194,11 @@ const updateUser = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        user: user.id,
-        message: "User updated successfully",
-      });
+    return res.status(200).json({
+      success: true,
+      user: user.id,
+      message: "User updated successfully",
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -205,10 +214,19 @@ const getUser = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
-    return res.status(200).json({ success: true, user, message: "User found 😀"});
+    return res
+      .status(200)
+      .json({ success: true, user, message: "User found 😀" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-module.exports = { registerUser, verifyOTP, loginUser, logoutUser, updateUser, getUser };
+module.exports = {
+  registerUser,
+  verifyOTP,
+  loginUser,
+  logoutUser,
+  updateUser,
+  getUser,
+};
