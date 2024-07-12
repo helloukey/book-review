@@ -9,7 +9,7 @@ const getUser = async () => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          "Access-Control-Allow-Credentials": "true",
+          // "Access-Control-Allow-Credentials": "true",
         },
       }
     );
