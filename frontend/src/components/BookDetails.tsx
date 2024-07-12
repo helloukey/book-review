@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getBook } from "../apis/book";
 import type { Book, Review, User } from "../types/data";
 import { AddReviewModal } from "./AddReviewModal";
 import { getReviews } from "../apis/review";
+import { Loader } from "./Loader";
 
 type Props = {
   user: User | null;
@@ -12,15 +13,30 @@ type Props = {
 const BookDetails = ({ user }: Props) => {
   const [book, setBook] = useState<Book | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const { bookId } = useParams();
+
+  // Perform API calls
+  const performApiCalls = useCallback(async () => {
+    setLoading(true);
+    const bookData = await getBook(bookId || "");
+    setBook(bookData?.data);
+    const reviewsData = await getReviews(bookId || "");
+    setReviews(reviewsData?.data);
+    setLoading(false);
+  }, [bookId]);
 
   // Fetch book details using bookId
   useEffect(() => {
-    getBook(bookId || "").then((data) => setBook(data?.data));
-    getReviews(bookId || "").then((data) => setReviews(data?.data));
-  }, [bookId]);
+    performApiCalls();
+  }, [performApiCalls]);
 
-  if (!book) {
+  // Return a loader if book is not fetched yet
+  if (!book || loading) {
+    return <Loader />;
+  }
+
+  if (!book || loading) {
     return (
       <h1 className="mb-4 text-center text-2xl font-bold text-gray-800 sm:text-3xl md:mb-6">
         404 Not Found!
