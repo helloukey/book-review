@@ -36,7 +36,7 @@ const Register = (props: Props) => {
       }
     } catch (error: any) {
       setLoading(false);
-      setError(error.message);
+      setError(error?.message);
     }
   };
 

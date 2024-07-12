@@ -23,7 +23,6 @@ const Login = (props: Props) => {
     try {
       setLoading(true);
       const data = await loginUser({ email, password });
-      console.log(data);
       setLoading(false);
       if (!data?.success) {
         setError(data?.message);
@@ -35,7 +34,6 @@ const Login = (props: Props) => {
     } catch (error: any) {
       setLoading(false);
       setError(error?.message);
-      console.log(error);
     }
   };
 
