@@ -23,9 +23,10 @@ const Login = (props: Props) => {
     try {
       setLoading(true);
       const data = await loginUser({ email, password });
+      console.log(data);
       setLoading(false);
       if (!data?.success) {
-        setError(data.message);
+        setError(data?.message);
         return;
       }
       if (data?.success) {
