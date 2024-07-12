@@ -41,6 +41,3 @@ app.get("/", (req, res) => {
 app.use("/user", userRoute);
 app.use("/book", bookRoute);
 app.use("/review", reviewRoute);
-
-// export the app
-module.exports = app;
