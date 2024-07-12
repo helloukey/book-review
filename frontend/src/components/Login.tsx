@@ -33,7 +33,8 @@ const Login = (props: Props) => {
       }
     } catch (error: any) {
       setLoading(false);
-      setError(error.message);
+      setError(error?.message);
+      console.log(error);
     }
   };
 
