@@ -1,10 +1,10 @@
-const User = require("../models/user");
-const Otp = require("../models/otp");
-const generateOtp = require("../utils/otp");
-const sendMail = require("../utils/mail");
-const { compareValues } = require("../utils/bcrypt");
-const generateToken = require("../utils/token");
-const { detailsOptions } = require("../utils/details");
+const User = require("../models/user.js");
+const Otp = require("../models/otp.js");
+const generateOtp = require("../utils/otp.js");
+const sendMail = require("../utils/mail.js");
+const { compareValues } = require("../utils/bcrypt.js");
+const generateToken = require("../utils/token.js");
+const { detailsOptions } = require("../utils/details.js");
 
 // Register a new user
 const registerUser = async (req, res) => {
