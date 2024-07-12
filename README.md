@@ -1,4 +1,4 @@
-# myCafe
+# Book Review
 
 A Complete Book Review WebApp made using ReactJS, NodeJS, ExpressJS and MongoDB.
 
