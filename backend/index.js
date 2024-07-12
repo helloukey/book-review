@@ -14,7 +14,10 @@ const reviewRoute = require("./routes/review");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_BASE_URL,
+  credentials: true,
+}));
 
 // connect to MongoDB and start the server
 const startServer = async () => {
