@@ -89,7 +89,7 @@ const verifyOTP = async (req, res) => {
       const token = generateToken(otpDoc.user);
       res.cookie("jwt", token, {
         httpOnly: true,
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         secure: process.env.NODE_ENV === "production",
         maxAge: 1000 * 60 * 60 * 24 * 30,
       });
@@ -163,7 +163,7 @@ const loginUser = async (req, res) => {
     const token = generateToken(user._id);
     res.cookie("jwt", token, {
       httpOnly: true,
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24 * 30,
     });
